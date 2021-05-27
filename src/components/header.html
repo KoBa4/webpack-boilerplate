@@ -1,0 +1,11 @@
+<header class="header" id="header">
+  <nav class="navigation">
+    <ul class="navigation__list">
+      <each loop="item, index in ['Home', 'About', 'Services', 'Work', 'Contact']">
+        <li class="navigation__item">
+          <a class="navigation__link smoothscroll" href="#{{ item.toLowerCase() }}">{{ item }}</a>
+        </li>
+      </each>
+    </ul>
+  </nav>
+</header>

@@ -1,0 +1,41 @@
+{
+  "plugins": [
+//    "prettier",
+    "clean-regex",
+    "import"
+  ],
+  "extends": [
+    "airbnb-base/legacy",
+//    "prettier",
+//    "plugin:prettier/recommended",
+    "plugin:clean-regex/recommended",
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "env": {
+    "es6": true
+  },
+  "rules": {
+    "arrow-body-style": [2, "as-needed"],
+    "arrow-parens": [2, "as-needed"],
+    "func-names": [0, "as-needed"],
+    "semi": [2, "never", { "beforeStatementContinuationChars": "never"}],
+    "no-confusing-arrow": 0,
+    "no-debugger": "off",
+    "no-console": 0,
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "never",
+      "exports": "never",
+      "functions": "never"
+    }],
+    "no-underscore-dangle": ["off"],
+    "global-require": ["off"],
+    "max-len": ["error", { "code": 100, "ignoreUrls": true }]
+//    "prettier/prettier": ["error", {"singleQuote": true, "parser": "flow"}]
+  }
+}

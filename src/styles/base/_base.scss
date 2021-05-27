@@ -1,0 +1,55 @@
+@import "~normalize.css";
+@import "typography";
+
+html {
+  height: 100%;
+  background-image: linear-gradient(to right top, #8e44ad 0%, #3498db 100%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  box-sizing: inherit;
+  color: #222;
+  font-weight: 400;
+  font-size: 1.5em;
+  font-family: 'OpenSans', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.image {
+  position: relative;
+  width: 50%;
+  margin: 0 auto;
+
+  img {
+    width: 100%;
+  }
+}
+
+.gear {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+
+  svg {
+    width: 50px;
+    height: 50px;
+    transition: fill 0.3s ease;
+
+    &:hover {
+      fill: #fff;
+    }
+  }
+}
