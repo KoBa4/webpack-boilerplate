@@ -1,23 +1,25 @@
 {
   "plugins": [
-//    "prettier",
+    "prettier",
     "clean-regex",
     "import"
   ],
   "extends": [
+    "eslint:recommended",
     "airbnb-base/legacy",
-//    "prettier",
+    "prettier",
 //    "plugin:prettier/recommended",
-    "plugin:clean-regex/recommended",
-    "eslint:recommended"
+    "plugin:clean-regex/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
   "env": {
+    "browser": true,
     "es6": true
   },
+  "ignorePatterns": ["dist", "node_modules"],
   "rules": {
     "arrow-body-style": [2, "as-needed"],
     "arrow-parens": [2, "as-needed"],
@@ -35,6 +37,7 @@
     }],
     "no-underscore-dangle": ["off"],
     "global-require": ["off"],
+    "no-use-before-define": ["error", { "functions": false }],
     "max-len": ["error", { "code": 100, "ignoreUrls": true }]
 //    "prettier/prettier": ["error", {"singleQuote": true, "parser": "flow"}]
   }

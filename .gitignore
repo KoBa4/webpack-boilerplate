@@ -1,3 +1,29 @@
+### User template
 /node_modules/
 app/
+src/assets/fonts/converted/*
+!src/assets/fonts/converted/.keep
+
+# IntelliJ project files
 .idea/
+*.iml
+out
+gen
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore Logs
+logs
+*.log
+
+# Ignore IDE specific files
+.vscode/
+*.sw*

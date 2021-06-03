@@ -68,6 +68,5 @@ module.exports = {
     new CleanWebpackPlugin(),
     plugins.MiniCssExtractPlugin,
     new SpriteLoaderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
   ],
 }

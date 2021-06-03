@@ -1,10 +1,15 @@
-const fs = require('fs').promises
 const path = require('path')
+const fs = require('fs').promises
+const fse = require('fs-extra')
+const Fontmin = require('fontmin')
 const fonts = require('@hayes0724/web-font-converter/src/lib/fonts')
-// const { convertAllFonts } = require('@hayes0724/web-font-converter')
+
+let argv = require('minimist')(process.argv.slice(2))
+const { mode = 'modern' } = argv // "oldie", "recent" or "modern"
 
 const srcFonts = path.resolve(__dirname, 'src/styles/base/_fonts.scss')
 const folderFonts = path.resolve(__dirname, 'src/assets/fonts')
+const outputFolderFonts = path.resolve(__dirname, 'src/assets/fonts/converted')
 let style = 'normal'
 
 const checkWeight = fontName => {
@@ -44,8 +49,15 @@ const checkWeight = fontName => {
 }
 (async function () {
   try {
-    await fs.writeFile(srcFonts, '', 'utf-8')
-    const files = await fs.readdir(folderFonts)
+    await rmFonts(outputFolderFonts)
+    // await fse.emptyDir(outputFolderFonts)
+    // await fse.outputFile(`${outputFolderFonts}/.keep`, '', 'utf-8')
+    await fse.outputFile(srcFonts, '', 'utf-8')
+    const allFiles = await fs.readdir(folderFonts, { withFileTypes: true })
+    const files = allFiles
+      .filter(dirent => dirent.isFile())
+      .map(dirent => dirent.name)
+
     let cFontName = ''
     // eslint-disable-next-line no-restricted-syntax
     for (const file of files) {
@@ -61,30 +73,90 @@ const checkWeight = fontName => {
         await fs.appendFile(
           srcFonts,
           // eslint-disable-next-line max-len
-          `@include font-face("${font}", "../assets/fonts/${fontname}", ${weight}, ${style}, "modern");\r\n`,
+          `@include font-face("${font}", "../assets/fonts/converted/${fontname}", ${weight}, ${style}, "${mode}");\r\n`,
           undefined
         )
 
-        if (file.endsWith('.ttf')) {
-          fonts.ttf.convert
-            .woff2(`${folderFonts}/${fontname}.ttf`, `${folderFonts}/${fontname}.woff2`)
-          fonts.ttf.convert
-            .woff(`${folderFonts}/${fontname}.ttf`, `${folderFonts}/${fontname}.woff`)
-          // eslint-disable-next-line no-await-in-loop
-          await fs.rm(`${folderFonts}/${file}`)
+        /* eslint-disable no-await-in-loop */
+        switch (true) {
+          case file.endsWith('.svg'):
+            await fromSVG(fontname)
+            break
+          case file.endsWith('.otf'):
+            await fromOTF(fontname)
+            break
+          case file.endsWith('.ttf'):
+            await fromTTF(fontname)
+            break
+          case file.endsWith('.woff'):
+          case file.endsWith('.woff2'):
+            await copyFonts(file)
+            break
+          default:
+            console.log(`${file} not supported`)
         }
+        /* eslint-enable no-await-in-loop */
       }
       cFontName = fontname
     }
+
+    console.log('Fonts converted!')
   } catch (e) {
     console.log(e)
   }
 }())
 
-// convertAllFonts({
-//   pathIn: folderFonts,
-//   pathOut: folderFonts,
-//   outputFormats: ['.woff', '.woff2'],
-//   inputFormats: ['.ttf'],
-//   debug: false,
-// })
+async function rmFonts(dir) {
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const files = await fs.readdir(dir)
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const file of files) {
+      if (!file.endsWith('.keep')) {
+        // eslint-disable-next-line no-await-in-loop
+        await fs.unlink(path.join(dir, file))
+      }
+    }
+  } catch (err) {
+    throw err
+  }
+}
+
+async function copyFonts(file) {
+  await fse.copy(`${folderFonts}/${file}`, `${outputFolderFonts}/${file}`)
+}
+
+async function fromTTF(fontName) {
+  fonts.ttf.convert
+    .woff2(`${folderFonts}/${fontName}.ttf`, `${outputFolderFonts}/${fontName}.woff2`)
+  fonts.ttf.convert
+    .woff(`${folderFonts}/${fontName}.ttf`, `${outputFolderFonts}/${fontName}.woff`)
+
+  if (mode === 'recent') {
+    await fse.copy(`${folderFonts}/${fontName}.ttf`, `${outputFolderFonts}/${fontName}.ttf`)
+  }
+
+  if (mode === 'oldie') {
+    const fontmin = new Fontmin()
+      .use(Fontmin.ttf2eot())
+      .src(`${folderFonts}/${fontName}.ttf`)
+      .dest(outputFolderFonts)
+
+    fontmin.run()
+  }
+}
+
+async function fromSVG(fontName) {
+  fonts.svg.convert
+    .ttf(`${folderFonts}/${fontName}.svg`, `${folderFonts}/${fontName}.ttf`)
+  await fromTTF(fontName)
+  await fs.rm(`${folderFonts}/${fontName}.svg`)
+}
+
+async function fromOTF(fontName) {
+  fonts.otf.convert
+    .svg(`${folderFonts}/${fontName}.otf`, `${folderFonts}/${fontName}.svg`)
+  await fromSVG(fontName)
+  await fs.rm(`${folderFonts}/${fontName}.otf`)
+}

@@ -1,8 +1,9 @@
 const path = require('path')
 const { merge } = require('webpack-merge')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const common = require('./webpack.config.js')
-const { HtmlBeautifyPlugin, ConvertToWebp } = require('./plugins')
+const { HtmlBeautifyPlugin } = require('./plugins')
 
 let devServer
 
@@ -40,5 +41,5 @@ module.exports = merge(common, {
       devServer = server
     },
   },
-  plugins: [ReloadHtml, HtmlBeautifyPlugin, ConvertToWebp],
+  plugins: [ReloadHtml, HtmlBeautifyPlugin, new webpack.HotModuleReplacementPlugin()],
 })

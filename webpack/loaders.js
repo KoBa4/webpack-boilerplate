@@ -1,6 +1,7 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
+// eslint-disable-next-line no-unused-vars
 const isDev = process.env.NODE_ENV === 'development'
 const rootPath = path.resolve(process.cwd(), 'src')
 
@@ -44,7 +45,6 @@ const CSSLoader = {
         },
       },
     },
-    // 'group-css-media-queries-loader',
     'sass-loader',
     'import-glob-loader',
   ],
@@ -54,9 +54,16 @@ const IMGLoader = {
   test: /\.(jpe?g|png|webp|gif|tiff)$/i,
   type: 'asset/resource',
   generator: {
-    filename: './img/[name][ext]',
+    filename: 'img/[name][ext]',
     // filename: ({ filename }) => filename.replace('assets/', ''),
   },
+  // use: {
+  //   loader: 'responsive-loader',
+  //   options: {
+  //     adapter: require('responsive-loader/sharp'),
+  //     name: 'img/[name].[ext]',
+  //   },
+  // },
 }
 
 const SVGLoaderMono = {

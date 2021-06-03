@@ -1,4 +1,3 @@
-// const path = require('path')
 const _MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const _HtmlBeautifyPlugin = require('@nurminen/html-beautify-webpack-plugin')
 const _ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
@@ -24,6 +23,7 @@ const HtmlBeautifyPlugin = new _HtmlBeautifyPlugin({
 
 const ImageMinimizerPlugin = new _ImageMinimizerPlugin({
   test: /\.(jpe?g|png|gif)$/i,
+  exclude: /\/icons/,
   minimizerOptions: {
     plugins: [
       ['gifsicle', { interlaced: true, optimizationLevel: 3 }],
