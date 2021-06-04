@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin')
 const loaders = require('./loaders')
-const { MiniCssExtractPlugin, ESLintPlugin } = require('./plugins')
+const { MiniCssExtractPlugin, ESLintPlugin, StylelintPlugin } = require('./plugins')
 
 const isDev = process.env.NODE_ENV === 'development'
 const rootPath = path.join(process.cwd())
@@ -67,6 +67,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     MiniCssExtractPlugin,
     ESLintPlugin,
+    StylelintPlugin,
     new SpriteLoaderPlugin(),
   ],
 }

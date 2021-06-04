@@ -1,6 +1,7 @@
 const _MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const _HtmlBeautifyPlugin = require('@nurminen/html-beautify-webpack-plugin')
 const _ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
+const _StylelintPlugin = require('stylelint-webpack-plugin')
 const _ESLintPlugin = require('eslint-webpack-plugin')
 const { resolve } = require('path')
 
@@ -12,9 +13,15 @@ const MiniCssExtractPlugin = new _MiniCssExtractPlugin({
 })
 
 const ESLintPlugin = new _ESLintPlugin({
+  eslintPath: require.resolve('eslint'),
   overrideConfigFile: resolve(rootPath, '.eslintrc'),
   files: ['src', 'webpack'],
   extensions: ['jsx', 'js'],
+})
+
+const StylelintPlugin = new _StylelintPlugin({
+  stylelintPath: require.resolve('stylelint'),
+  configFile: resolve(rootPath, '.stylelintrc'),
 })
 
 const HtmlBeautifyPlugin = new _HtmlBeautifyPlugin({
@@ -57,4 +64,5 @@ module.exports = {
   ImageMinimizerPlugin: ImageMinimizerPlugin,
   ConvertToWebp: ConvertToWebp,
   ESLintPlugin: ESLintPlugin,
+  StylelintPlugin: StylelintPlugin,
 }
