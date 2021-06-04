@@ -1,14 +1,10 @@
 {
-  "plugins": [
-    "prettier",
-    "clean-regex",
-    "import"
-  ],
+  "plugins": ["prettier", "clean-regex", "import"],
   "extends": [
     "eslint:recommended",
     "airbnb-base/legacy",
     "prettier",
-//    "plugin:prettier/recommended",
+    //"plugin:prettier/recommended",
     "plugin:clean-regex/recommended"
   ],
   "parserOptions": {
@@ -21,24 +17,33 @@
   },
   "ignorePatterns": ["dist", "node_modules"],
   "rules": {
-    "arrow-body-style": [2, "as-needed"],
+    "object-curly-spacing": 1,
+    "arrow-body-style": [1, "as-needed"],
     "arrow-parens": [2, "as-needed"],
     "func-names": [0, "as-needed"],
-    "semi": [2, "never", { "beforeStatementContinuationChars": "never"}],
+    "semi": [2, "never", { "beforeStatementContinuationChars": "never" }],
     "no-confusing-arrow": 0,
+    "no-template-curly-in-string": 1,
+    "no-self-compare": 1,
     "no-debugger": "off",
     "no-console": 0,
-    "comma-dangle": ["error", {
-      "arrays": "always-multiline",
-      "objects": "always-multiline",
-      "imports": "never",
-      "exports": "never",
-      "functions": "never"
-    }],
+    "no-var": 1,
+    "camelcase": 1,
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "never",
+        "exports": "never",
+        "functions": "never"
+      }
+    ],
+    "no-multiple-empty-lines": [1, { "max": 1, "maxEOF": 1 }],
     "no-underscore-dangle": ["off"],
     "global-require": ["off"],
     "no-use-before-define": ["error", { "functions": false }],
     "max-len": ["error", { "code": 100, "ignoreUrls": true }]
-//    "prettier/prettier": ["error", {"singleQuote": true, "parser": "flow"}]
+    //"prettier/prettier": ["error", {"singleQuote": true, "parser": "flow"}]
   }
 }

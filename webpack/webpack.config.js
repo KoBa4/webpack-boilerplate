@@ -5,14 +5,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin')
 const loaders = require('./loaders')
-const plugins = require('./plugins')
+const { MiniCssExtractPlugin, ESLintPlugin } = require('./plugins')
 
 const isDev = process.env.NODE_ENV === 'development'
 const rootPath = path.join(process.cwd())
 const PAGES_DIR = path.join(rootPath, 'src')
-const PAGES = fs
-  .readdirSync(PAGES_DIR)
-  .filter(fileName => fileName.endsWith('.html'))
+const PAGES = fs.readdirSync(PAGES_DIR).filter(fileName => fileName.endsWith('.html'))
 
 module.exports = {
   context: path.resolve(rootPath, 'src'),
@@ -39,7 +37,7 @@ module.exports = {
         },
         vendor: {
           test: /\/node_modules\/((?!(bootstrap|lodash|moment|moment-timezone)).*)\//,
-          name: 'vendors',
+          name: 'vendor',
           // chunks: 'all',
         },
       },
@@ -58,15 +56,17 @@ module.exports = {
   },
   plugins: [
     ...PAGES.map(
-      page => new HtmlWebpackPlugin({
-        template: `${PAGES_DIR}/${page}`,
-        filename: `${page}`,
-        favicon: './assets/favicon.ico',
-      })
+      page =>
+        new HtmlWebpackPlugin({
+          template: `${PAGES_DIR}/${page}`,
+          filename: `${page}`,
+          favicon: './assets/favicon.ico',
+        })
     ),
     new webpack.ProgressPlugin(),
     new CleanWebpackPlugin(),
-    plugins.MiniCssExtractPlugin,
+    MiniCssExtractPlugin,
+    ESLintPlugin,
     new SpriteLoaderPlugin(),
   ],
 }

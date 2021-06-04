@@ -54,9 +54,7 @@ const checkWeight = fontName => {
     // await fse.outputFile(`${outputFolderFonts}/.keep`, '', 'utf-8')
     await fse.outputFile(srcFonts, '', 'utf-8')
     const allFiles = await fs.readdir(folderFonts, { withFileTypes: true })
-    const files = allFiles
-      .filter(dirent => dirent.isFile())
-      .map(dirent => dirent.name)
+    const files = allFiles.filter(dirent => dirent.isFile()).map(dirent => dirent.name)
 
     let cFontName = ''
     // eslint-disable-next-line no-restricted-syntax
@@ -104,7 +102,7 @@ const checkWeight = fontName => {
   } catch (e) {
     console.log(e)
   }
-}())
+})()
 
 async function rmFonts(dir) {
   // eslint-disable-next-line no-useless-catch
@@ -128,10 +126,11 @@ async function copyFonts(file) {
 }
 
 async function fromTTF(fontName) {
-  fonts.ttf.convert
-    .woff2(`${folderFonts}/${fontName}.ttf`, `${outputFolderFonts}/${fontName}.woff2`)
-  fonts.ttf.convert
-    .woff(`${folderFonts}/${fontName}.ttf`, `${outputFolderFonts}/${fontName}.woff`)
+  fonts.ttf.convert.woff2(
+    `${folderFonts}/${fontName}.ttf`,
+    `${outputFolderFonts}/${fontName}.woff2`
+  )
+  fonts.ttf.convert.woff(`${folderFonts}/${fontName}.ttf`, `${outputFolderFonts}/${fontName}.woff`)
 
   if (mode === 'recent') {
     await fse.copy(`${folderFonts}/${fontName}.ttf`, `${outputFolderFonts}/${fontName}.ttf`)
@@ -148,15 +147,13 @@ async function fromTTF(fontName) {
 }
 
 async function fromSVG(fontName) {
-  fonts.svg.convert
-    .ttf(`${folderFonts}/${fontName}.svg`, `${folderFonts}/${fontName}.ttf`)
+  fonts.svg.convert.ttf(`${folderFonts}/${fontName}.svg`, `${folderFonts}/${fontName}.ttf`)
   await fromTTF(fontName)
   await fs.rm(`${folderFonts}/${fontName}.svg`)
 }
 
 async function fromOTF(fontName) {
-  fonts.otf.convert
-    .svg(`${folderFonts}/${fontName}.otf`, `${folderFonts}/${fontName}.svg`)
+  fonts.otf.convert.svg(`${folderFonts}/${fontName}.otf`, `${folderFonts}/${fontName}.svg`)
   await fromSVG(fontName)
   await fs.rm(`${folderFonts}/${fontName}.otf`)
 }

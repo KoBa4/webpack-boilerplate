@@ -12,10 +12,7 @@ export function replaceImgToPicture(html) {
   function __setAttribute(source, img, attr, newAttr) {
     const value = img.getAttribute(attr)
     if (value) {
-      source.setAttribute(
-        newAttr || attr,
-        value.replace(/\.(jpe?g|png|gif)/gi, '.webp')
-      )
+      source.setAttribute(newAttr || attr, value.replace(/\.(jpe?g|png|gif)/gi, '.webp'))
     }
   }
 

@@ -38,6 +38,7 @@
     "eslint-plugin-clean-regex": "^0.5.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.4.0",
+    "eslint-webpack-plugin": "^2.5.4",
     "file-loader": "^6.2.0",
     "fontmin": "^0.9.8",
     "fs-extra": "^10.0.0",

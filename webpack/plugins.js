@@ -1,11 +1,20 @@
 const _MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const _HtmlBeautifyPlugin = require('@nurminen/html-beautify-webpack-plugin')
 const _ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
+const _ESLintPlugin = require('eslint-webpack-plugin')
+const { resolve } = require('path')
 
+const rootPath = resolve(process.cwd())
 const isDev = process.env.NODE_ENV === 'development'
 
 const MiniCssExtractPlugin = new _MiniCssExtractPlugin({
   filename: isDev ? './css/[name].css' : './css/[name].[contenthash:12].css',
+})
+
+const ESLintPlugin = new _ESLintPlugin({
+  overrideConfigFile: resolve(rootPath, '.eslintrc'),
+  files: ['src', 'webpack'],
+  extensions: ['jsx', 'js'],
 })
 
 const HtmlBeautifyPlugin = new _HtmlBeautifyPlugin({
@@ -47,4 +56,5 @@ module.exports = {
   HtmlBeautifyPlugin: HtmlBeautifyPlugin,
   ImageMinimizerPlugin: ImageMinimizerPlugin,
   ConvertToWebp: ConvertToWebp,
+  ESLintPlugin: ESLintPlugin,
 }
