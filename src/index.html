@@ -2,24 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Title</title>
+    <title>Webpack Boilerplate</title>
   </head>
   <body>
     <!--Header-->
     <include src="components/header.html" locals="{}"></include>
     <!--Main-->
     <main class="main">
-      <div class="container">
-        <div class="image">
-          <img src="assets/img/bg.jpg" alt="background image" />
-          <div class="gear">
-            <a href="#">
-              <svg>
-                <use xlink:href="#settings"></use>
-              </svg>
-            </a>
-          </div>
-        </div>
+      <div class="grid">
+        <a href="#" class="card">
+          <h2>Mono svg icon test</h2>
+          <svg class="card__icon--test">
+            <use xlink:href="#settings"></use>
+          </svg>
+        </a>
+        <a href="#" class="card">
+          <h2>Multi svg icon test</h2>
+          <svg>
+            <use xlink:href="#loupe"></use>
+          </svg>
+        </a>
+        <a href="#" class="card">
+          <h2>Simple svg image test</h2>
+          <img src="assets/img/warning-sign.svg" alt="warning">
+        </a>
+        <a href="#" class="card">
+          <svg>
+            <use xlink:href="#loupe"></use>
+          </svg>
+        </a>
+        <img src="assets/img/bg.jpg?format=webp" alt="">
       </div>
     </main>
   </body>

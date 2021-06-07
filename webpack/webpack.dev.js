@@ -25,9 +25,9 @@ function ReloadHtml() {
   })
 }
 
-module.exports = merge(common, {
+const devConf = {
   mode: 'development',
-  target: 'web',
+  target: ['web', 'es5'],
   devtool: 'source-map',
   devServer: {
     historyApiFallback: true,
@@ -42,4 +42,6 @@ module.exports = merge(common, {
     },
   },
   plugins: [ReloadHtml, HtmlBeautifyPlugin, new webpack.HotModuleReplacementPlugin()],
-})
+}
+
+module.exports = merge(common, devConf)

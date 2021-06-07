@@ -3,6 +3,7 @@ const _HtmlBeautifyPlugin = require('@nurminen/html-beautify-webpack-plugin')
 const _ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
 const _StylelintPlugin = require('stylelint-webpack-plugin')
 const _ESLintPlugin = require('eslint-webpack-plugin')
+const { extendDefaultPlugins } = require("svgo")
 const { resolve } = require('path')
 
 const rootPath = resolve(process.cwd())
@@ -38,13 +39,31 @@ const HtmlBeautifyPlugin = new _HtmlBeautifyPlugin({
 })
 
 const ImageMinimizerPlugin = new _ImageMinimizerPlugin({
-  test: /\.(jpe?g|png|gif)$/i,
-  exclude: /\/icons/,
+  test: /\.(jpe?g|png|gif|svg|webp)$/i,
+  exclude: /assets\/icons\/(?:mono|multi)\/.+\.svg$/,
   minimizerOptions: {
     plugins: [
       ['gifsicle', { interlaced: true, optimizationLevel: 3 }],
       ['mozjpeg', { quality: 80, progressive: true }],
       ['pngquant', { quality: [0.8, 0.9] }],
+      ['imagemin-webp', { quality: 90 }],
+      [
+        'svgo',
+        {
+          plugins: extendDefaultPlugins([
+            {
+              name: "removeViewBox",
+              active: false,
+            },
+            {
+              name: "addAttributesToSVGElement",
+              params: {
+                attributes: [{ xmlns: "http://www.w3.org/2000/svg" }],
+              },
+            },
+          ]),
+        },
+      ],
     ],
   },
 })

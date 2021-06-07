@@ -30,12 +30,14 @@ const HtmlLoader = {
 const CSSLoader = {
   test: /\.(s[ac]ss|css)$/i,
   use: [
-    {
-      loader: MiniCssExtractPlugin.loader,
-      options: {
-        publicPath: (resourcePath, ctx) => path.relative(path.dirname(resourcePath), ctx) + '/',
+    isDev
+      ? 'style-loader'
+      : {
+        loader: MiniCssExtractPlugin.loader,
+        options: {
+          publicPath: (resourcePath, ctx) => path.relative(path.dirname(resourcePath), ctx) + '/',
+        },
       },
-    },
     'css-loader',
     {
       loader: 'postcss-loader',
@@ -51,8 +53,12 @@ const CSSLoader = {
 }
 
 const IMGLoader = {
-  test: /\.(jpe?g|png|webp|gif|tiff)$/i,
+  test: /\.(jpe?g|png|webp|gif|tiff|svg)$/i,
   type: 'asset/resource',
+  exclude: [
+    /assets\/icons\/mono\/.+\.svg$/,
+    /assets\/icons\/multi\/.+\.svg$/,
+  ],
   generator: {
     filename: 'img/[name][ext]',
     // filename: ({ filename }) => filename.replace('assets/', ''),
@@ -67,7 +73,9 @@ const IMGLoader = {
 }
 
 const SVGLoaderMono = {
-  test: /(mono).*\.svg$/,
+  test: /\.svg$/,
+  exclude: /node_modules/,
+  include: /assets\/icons\/mono\/.+\.svg$/,
   use: [
     {
       loader: 'svg-sprite-loader',
@@ -96,7 +104,9 @@ const SVGLoaderMono = {
 }
 
 const SVGLoaderMulti = {
-  test: /(multi).*\.svg$/,
+  test: /\.svg$/,
+  exclude: /node_modules/,
+  include: /assets\/icons\/multi\/.+\.svg$/,
   use: [
     {
       loader: 'svg-sprite-loader',
@@ -125,8 +135,8 @@ const SVGLoaderMulti = {
 }
 
 const FONTLoader = {
-  // test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-  test: /\.(woff(2)?)$/,
+  test: /\.(woff(2)?|eot|ttf|otf|svg)$/,
+  // test: /\.(woff(2)?)$/,
   type: 'asset',
   generator: {
     filename: 'fonts/[name][ext]',
